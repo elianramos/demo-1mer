@@ -1,0 +1,26 @@
+name: Deploy to Surge
+
+# El flujo se ejecutará en cada push a la rama principal (main)
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Paso 1: Check out the repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Paso 2: Instalar Surge CLI
+      - name: Install Surge
+        run: npm install --global surge
+
+      # Paso 3: Desplegar el proyecto en Surge
+      - name: Deploy to Surge
+        env:
+          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}  # Variable de entorno que contendrá el token
+        run: surge --project ./ --domain <SURGE_SUBDOMAIN>.surge.sh
